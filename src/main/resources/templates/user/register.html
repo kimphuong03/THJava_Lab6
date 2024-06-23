@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Sign up</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <style>
+        body {
+            background-color: #1a1a1a; /* Dark background */
+            color: #e0e0e0; /* Light text color */
+            font-family: 'Arial', sans-serif; /* Professional font */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card {
+            background-color: #2a2a2a; /* Dark card background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        .card-title {
+            color: #e0e0e0;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .form-label {
+            color: #e0e0e0;
+        }
+        .form-control {
+            background-color: #333;
+            border: none;
+            border-radius: 4px;
+            color: #e0e0e0;
+            padding: 10px;
+        }
+        .form-control:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        .btn-info {
+            background-color: #17a2b8;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn-info:hover {
+            background-color: #138496;
+        }
+        .text-danger {
+            color: #dc3545;
+        }
+        footer {
+            background-color: #1a1a1a; /* Dark footer background */
+            padding: 1rem;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="~{layout::header}"></th:block>
+<div class="container">
+    <div class="card">
+        <h3 class="card-title text-center">Sign Up</h3>
+        <form th:action="@{/register}" th:object="${user}" method="post">
+            <div class="mb-3">
+                <label for="name" class="form-label">First Name:</label><span class="text-danger">*</span>
+                <input type="text" class="form-control" th:field="*{name}" id="name">
+                <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label><span class="text-danger">*</span>
+                <input type="email" class="form-control" th:field="*{email}" id="email">
+                <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            </div>
+            <div class="mb-3">
+                <label for="username" class="form-label">Username:</label><span class="text-danger">*</span>
+                <input type="text" class="form-control" id="username" th:field="*{username}">
+                <span class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password:</label><span class="text-danger">*</span>
+                <input type="password" class="form-control" th:field="*{password}" id="password">
+                <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+            </div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-info">Sign up</button>
+            </div>
+        </form>
+    </div>
+</div>
+<th:block th:replace="~{layout::footer}"></th:block>
+</body>
+</html>
