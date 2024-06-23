@@ -23,10 +23,11 @@ public class BookController {
 
     @GetMapping
     public String showAllBooks(Model model) {
-        List<Book> books = bookService.getAllBooks();
+        List<Book> books = bookService.getAllBook();
         model.addAttribute("books", books);
         return "book/list";
     }
+
 
     @GetMapping("/add")
     public String addBookForm(Model model) {

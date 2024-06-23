@@ -10,17 +10,18 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class CustomUserDetail implements UserDetails {
+
     private final User user;
     private final IUserRepository userRepository;
 
-    public CustomUserDetail(User user, IUserRepository userRepository) {
-        this.user = user;
+    public CustomUserDetail(User user, IUserRepository userRepository){
+        this.user=user;
         this.userRepository = userRepository;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.stream(userRepository.getRolesOfUser(user.getId()))
+        return Arrays.stream(userRepository.getRoleOfUser(user.getId()))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toSet());
     }

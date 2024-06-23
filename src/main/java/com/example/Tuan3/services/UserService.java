@@ -12,13 +12,13 @@ public class UserService {
     private IUserRepository userRepository;
 
     @Autowired
-    private IRoleRepository roleRepository;
+    private IRoleRepository repository;
 
     public void save(User user){
         userRepository.save(user);
-        Long userId = userRepository.getUserIdByUsername(user.getUsername());
-        Long roleId = roleRepository.getRoleIdByName("USER");
-        if (roleId != 0 && userId != 0) {
+        Long userId = userRepository.getUserIdUsername(user.getUsername());
+        Long roleId = repository.getRoleByName("USER");
+        if(roleId != 0 && userId != 0){
             userRepository.addRoleToUser(userId, roleId);
         }
     }

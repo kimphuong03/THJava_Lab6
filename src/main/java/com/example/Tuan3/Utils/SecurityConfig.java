@@ -11,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -38,46 +36,40 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(@org.jetbrains.annotations.NotNull HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-                .authorizeRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers( "/css/**", "/js/**", "/", "/register", "/error").permitAll()
-                        .requestMatchers( "/books/edit", "/books/delete")
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf(csrf-> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers( "/css/**", "/js/**", "/", "/register", "/error", "/books")
+                        .permitAll()
+                        .requestMatchers( "/books/edit/**", "/books/delete/**")
                         .hasAnyAuthority("ADMIN")
-                        .requestMatchers("/books", "/books/add")
+                        .requestMatchers("/books")
                         .hasAnyAuthority("ADMIN", "USER")
+                        .requestMatchers("/books/add")
+                        .hasAuthority("ADMIN")
                         .requestMatchers("/api/**")
                         .hasAnyAuthority("ADMIN", "USER")
                         .anyRequest().authenticated()
+
                 )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
+                .logout(logout -> logout.logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .permitAll()
                 )
-                .formLogin(formLogin -> formLogin
-                        .loginPage("/login")
+                .formLogin(formLogin -> formLogin.loginPage("/login")
                         .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/")
                         .permitAll()
                 )
-                .rememberMe(rememberMe -> rememberMe
-                        .key("uniqueAndSecret")
+                .rememberMe(rememberMe -> rememberMe.key("uniqueAndSecret")
                         .tokenValiditySeconds(86400)
                         .userDetailsService(userDetailsService())
                 )
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .accessDeniedPage("/403")
-                );
-
-        return http.build();
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling.accessDeniedPage("/403"))
+                .build();
     }
-
-
-
 }

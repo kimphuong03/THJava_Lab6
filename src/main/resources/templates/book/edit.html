@@ -4,28 +4,98 @@
     <meta charset="UTF-8">
     <title>Edit Book</title>
     <th:block th:replace="layout::link-css"></th:block>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #bbbbbb;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+        }
+        .form-control:focus {
+            border-color: #1e90ff;
+            outline: none;
+        }
+        .text-danger {
+            color: #ff6347;
+        }
+        .btn-primary {
+            background-color: #1e90ff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-back {
+            background-color: #444;
+            color: #e0e0e0;
+            padding: 10px 20px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 10px;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn-back:hover {
+            background-color: #333;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+    </style>
 </head>
 <body>
 <th:block th:replace="layout::header"></th:block>
 <div class="container">
     <h1>Edit Book</h1>
     <form th:action="@{/books/edit/{id}(id=${book.id})}" th:object="${book}" method="post">
-        <div class="col-6 mb-3">
-            <label class="form-label" for="title">Title: </label>
+        <div class="form-group">
+            <label class="form-label" for="title">Title:</label>
             <input class="form-control" type="text" th:field="*{title}" id="title">
             <span class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
         </div>
-        <div class="col-6 mb-3">
-            <label class="form-label" for="author">Author: </label>
+        <div class="form-group">
+            <label class="form-label" for="author">Author:</label>
             <input class="form-control" type="text" th:field="*{author}" id="author">
             <span class="text-danger" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></span>
         </div>
-        <div class="col-6 mb-3">
+        <div class="form-group">
             <label class="form-label" for="price">Price:</label>
             <input class="form-control" type="text" th:field="*{price}" id="price">
             <span class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
         </div>
-        <div class="col-6 mb-3">
+        <div class="form-group">
             <label class="form-label" for="category">Category:</label>
             <select class="form-control" th:field="*{category.id}" id="category">
                 <option value="">-- Select Category --</option>
@@ -35,7 +105,7 @@
         </div>
         <input type="submit" class="btn btn-primary" value="Save">
     </form>
-    <a th:href="@{/books}">Back to List</a>
+    <a th:href="@{/books}" class="btn-back">Back to List</a>
 </div>
 <th:block th:replace="layout::footer"></th:block>
 </body>
